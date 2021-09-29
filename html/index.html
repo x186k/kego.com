@@ -15,34 +15,48 @@
     crossorigin="anonymous"></script>
 
 
+  
 </head>
 
 <body>
   <h1 id="deadsfu">kego.com</h1>
 
-
+  <br> <br>
 
   <h3>
-    Search Contacts
+    Select server URL
+  </h3>
+
+  <div>
+    <label>Your server name: </label>
+    <input onkeydown="myfunc()" autofocus size="15" spellcheck="false" class="form-control" type="text" name="search" hx-post="/search"
+      hx-trigger="keyup changed delay:750ms" hx-target="#search-results" hx-indicator=".htmx-indicator"
+      placeholder="choose a name...">
+    <label for="textinput" style="cursor:text;">.kego.com</label>
+  </div>
+
+
+
+  <br>
+  <div>
     <span class="htmx-indicator">
       <img src="/assets/img/bars.svg" /> Searching...
     </span>
-  </h3>
-  <input autofocus class="form-control" type="text" name="search" placeholder="Begin Typing To Search Users..."
-    hx-post="/search" hx-trigger="keyup changed delay:250ms" hx-target="#search-results" hx-indicator=".htmx-indicator">
-
-
-  <br>
-  <br>
-  <div>
+  </div>
+  <div class="foo">
     <span id="search-results"></span>
   </div>
 
 
 
+  <script>
+    var element = document.getElementById("search-results");
 
+    function myfunc() {
+      element.innerText=""      
+    }
 
-
+  </script>
 
 
 

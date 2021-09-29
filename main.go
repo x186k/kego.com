@@ -1,13 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"time"
+	"unicode"
 )
+
+var _ = checkFatal
 
 func checkFatal(err error) {
 	if err != nil {
@@ -51,12 +56,27 @@ func main() {
 	f := os.DirFS("html")
 	mux.Handle("/", http.FileServer(neuteredFileSystem{http.FS(f)}))
 
+
+
 	mux.HandleFunc("/search", func(rw http.ResponseWriter, r *http.Request) {
-		a := time.Now().String()
+		//a := time.Now().String()
+		time.Sleep(time.Second * 2)
+		a := strings.ToLower(r.PostFormValue("search"))
+		b := []rune{}
+		for _, v := range a {
+			if unicode.IsNumber(v) || unicode.IsLetter(v) {
+				b = append(b, v)
+			}
+		}
+		final := string(b)
 
-		//time.Sleep(time.Second * 4)
+		if final == "" {
+			_, _ = rw.Write([]byte("not valid"))
+			return
+		}
 
-		_, _ = rw.Write([]byte(a))
+		c := fmt.Sprintf("Good news! Your domain is available: %s.kego.com", final)
+		_, _ = rw.Write([]byte(c))
 	})
 
 	println("serving http")
